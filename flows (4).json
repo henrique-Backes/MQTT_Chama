@@ -1,0 +1,173 @@
+[
+    {
+        "id": "64ed410d9ac2333a",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9af0b055f26589aa",
+        "type": "function",
+        "z": "64ed410d9ac2333a",
+        "name": "DetectaMatricula",
+        "func": "// Extrair a mensagem JSON da entrada\nvar mensagem = msg.payload;\n\n// Verificar se minha matricula está presente na chamada\nif (mensagem.matricula == \"18000333\") {\n\n    mensagem.nome = \"Henrique Magnus Backes\"; \n    mensagem.turma = \"4411\";\n    mensagem.seq += 800000;\n\n    // Verificar a temperatura interna e externa\n    if (mensagem.tempInt.valor < mensagem.tempExt.valor) {\n        mensagem.climatizado = \"Sim\";\n    } else {\n        mensagem.climatizado = \"Não\";\n    }\n    delete mensagem.tempInt;\n    delete mensagem.tempExt;\n    delete mensagem.umidade;\n\n    msg.payload = mensagem;\n\n    return msg;\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 60,
+        "wires": [
+            [
+                "4420cb33b5ecd2ea",
+                "2caedabc055faebe"
+            ]
+        ]
+    },
+    {
+        "id": "a402b622bbf43206",
+        "type": "mqtt in",
+        "z": "64ed410d9ac2333a",
+        "name": "RecebeChamada",
+        "topic": "Liberato/iotTro/44xx/data",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8d75822f131ae7bf",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 60,
+        "wires": [
+            [
+                "9af0b055f26589aa",
+                "fa802dfd0ddd40e1"
+            ]
+        ]
+    },
+    {
+        "id": "f39860277a69088b",
+        "type": "mqtt in",
+        "z": "64ed410d9ac2333a",
+        "name": "RecebeResposta",
+        "topic": "Liberato/iotTro/44xx/ack/18000333",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8d75822f131ae7bf",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "b60f6c6de2835460"
+            ]
+        ]
+    },
+    {
+        "id": "4420cb33b5ecd2ea",
+        "type": "mqtt out",
+        "z": "64ed410d9ac2333a",
+        "name": "EnviaChamada",
+        "topic": "Liberato/iotTro/44xx/rply/18000333",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8d75822f131ae7bf",
+        "x": 600,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "fa802dfd0ddd40e1",
+        "type": "debug",
+        "z": "64ed410d9ac2333a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "2caedabc055faebe",
+        "type": "debug",
+        "z": "64ed410d9ac2333a",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "b60f6c6de2835460",
+        "type": "debug",
+        "z": "64ed410d9ac2333a",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8d75822f131ae7bf",
+        "type": "mqtt-broker",
+        "name": "BrokerChamada",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "Henrique Magnus Backes",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "5",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
